@@ -51,8 +51,6 @@ const JELLYFIN_API_KEY = process.env.JELLYFIN_API_KEY;
                                                autoprefixer(), 
                                                cssnano({preset: 'default'})]).process(originalCss, {from: STYLE_PATH});
     
-    console.log(transpilationResult.css);
-    return;
     console.log("[i] Fetching current branding preferences...");
     const brandingUrl = JELLYFIN_BASE_URL + '/System/Configuration/branding';
     let res = await axiosInstance.get(brandingUrl);
