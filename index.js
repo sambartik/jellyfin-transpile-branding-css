@@ -21,18 +21,22 @@ if(!process.env.JELLYFIN_API_KEY) {
   console.error("[e] JELLYFIN_API_KEY env variable not set.");
   return;
 }
+if(!process.env.IGNORE_SSL_ERRORS) {
+  console.error("[e] IGNORE_SSL_ERRORS env variable not set.");
+  return;
+}
 
 const STYLE_PATH = path.resolve(process.env.STYLE_PATH);
 const JELLYFIN_BASE_URL = process.env.JELLYFIN_BASE_URL.endsWith("/") ? process.env.JELLYFIN_BASE_URL.slice(0,-1)
                                                                       : process.env.JELLYFIN_BASE_URL;
 const JELLYFIN_API_KEY = process.env.JELLYFIN_API_KEY;
-
+const IGNORE_SSL_ERRORS = process.env.IGNORE_SSL_ERRORS.toLowerCase() === 'true';
 
 (async () =>{
   try {
     const axiosInstance = axios.create({
       httpsAgent: new https.Agent({
-        rejectUnauthorized: false
+        rejectUnauthorized: IGNORE_SSL_ERRORS
       }),
       headers: {
         'X-MediaBrowser-Token': JELLYFIN_API_KEY
